@@ -12,6 +12,7 @@ img = cv2.imread('assets/fruitbasket.jpg')
 
 # looking at the [first row][nth pixel:to the mth pixel]
 # print(img[0][25:40])
+
 # looking at one pixel
 # print(img[0][30])
 
