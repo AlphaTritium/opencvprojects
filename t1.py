@@ -1,3 +1,8 @@
+""" 
+- opencv image display
+- resizing and rotating image
+"""
+
 import cv2 
 
 # -1, cv2.IMREAD_COLOR:    Loads a color image, any transparency of the image will be neglected. Default flag

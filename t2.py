@@ -1,3 +1,12 @@
+""" 
+- matplotlib image display
+- understanding the finer contents of an image
+- image manipulation
+    - copy and pasting parts of the image
+    - change contents on the image with pixel change
+- opencv key interfaces 
+"""
+
 import cv2
 from random import randint
 from matplotlib import pyplot as plt
@@ -5,7 +14,7 @@ from matplotlib import pyplot as plt
 img = cv2.imread('assets/fruitbasket.jpg')
 
 
-#displaying an image with matplotib
+# displaying an image with matplotib
 plt.imshow(img, cmap = 'gray', interpolation = 'bicubic') 
 # cmap,          maps data values to colors
 # "gray"    - greyscale
