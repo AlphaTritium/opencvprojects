@@ -10,7 +10,8 @@ import cv2
 
 # video capture
 # cap = cv2.VideoCapture(0) 0 for 1 source, 1 for another source, and 2 for another and so on
-cap = cv2.VideoCapture(0) # file name instead
+# cap = cv2.VideoCapture("video.mp4")     file name instead
+cap = cv2.VideoCapture(0) 
 
 while True:
     # attempts to read another frame
