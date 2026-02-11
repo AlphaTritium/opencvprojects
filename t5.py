@@ -1,3 +1,12 @@
+'''
+- color detection
+- imagery bitwise operations
+- mode switching state machine
+- font display
+- color scheme conversion
+
+'''
+
 import numpy as np
 import cv2
 
@@ -10,6 +19,7 @@ current_operation = 'w'  # 'w' means original frame
 ret, frame = videocam.read()
 width = int(videocam.get(3))
 height = int(videocam.get(4))
+# makes sure the image dimensions are suitable for bitwise operations
 resized = cv2.resize(img, (width, height))
 
 print('key operations: ','\n',
@@ -20,6 +30,7 @@ print('key operations: ','\n',
 'x - xor','\n',
 'w - original','\n',
 'm - mask','\n',
+'d - detection and let through','\n',
 'q - quit','\n',
 '')
 
@@ -56,43 +67,59 @@ while True:
         current_operation = 'x'  # bitwise XOR
     elif key == ord('w'):
         current_operation = 'w'  # original frame
+    elif key == ord('d'):        
+        current_operation = 'd'  # detects colors within range
     elif key == ord('m'):
         current_operation = 'm'  # mask display
     elif key == ord('q'):
         break  # quit application
     
     # Apply the current operation (persists until changed)
-    if current_operation == 'n':
+    ''' 
+    cv2.bitwise_and, cv2.bitwise_or, cv2.bitwise_nor, cv2.bitwise_xor
+    be mindful of the dimensions - both sources must have same dimensions
+
+    bitwise_operation(source1, source2, destination,)
+    
+    dimensions of src1 and 2 have to be the same
+    '''
+    if current_operation == 'n': # inversion 
         final = cv2.bitwise_not(frame)
+
     elif current_operation == 'o':
         final = cv2.bitwise_or(frame, resized)
-    elif current_operation == 'a':
+
+    elif current_operation == 'a': # final = frame & resized
         final = cv2.bitwise_and(frame, resized)
-    elif current_operation == 'r':
-        # NOR = NOT(OR) - OpenCV doesn't have direct bitwise_nor
+
+    elif current_operation == 'r': # NOR = NOT(OR)
         or_result = cv2.bitwise_or(frame, resized)
         final = cv2.bitwise_not(or_result)
-    elif current_operation == 'x':
+
+    elif current_operation == 'x': # detects difference
         final = cv2.bitwise_xor(frame, resized)
-    elif current_operation == 'w':
-        final = frame  # original frame
+
+    elif current_operation == 'w': # original frame
+        final = frame  
+
     elif current_operation == 'm':
-        # since normal display doesnt work
-        # because of greyscale
-        # must convert 1-channel mask back to 3-channel BGR for text display
+        # normal display doesnt work because of greyscale
+        # hence must convert 1-channel mask back to 3-channel BGR for text display
         # still black and white(greyscale) for the rest of the display
         final = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+
+    elif current_operation == 'd':
+        # lets the frame content through if within mask colour range
+        # final = (frame & frame) & mask
+        final = cv2.bitwise_and(frame,frame,mask=mask)
+
     else:
         final = frame  # default to original
-    
-    # cv2.bitwise_and, cv2.bitwise_or, cv2.bitwise_nor, cv2.bitwise_xor
-    # be mindful of the dimensions - both sources must have same dimensions
-    # function(source1, source2)
     
     # Display the current operation mode on the frame
     cv2.putText(final, f"Mode: {current_operation}", (10, 30), 
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    cv2.putText(final, "Press keys: n,o,a,r,x,w,m,q", (10, 60), 
+    cv2.putText(final, "Press keys: n,o,a,r,x,w,m,d,q", (10, 60), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
     
     # Display the result
@@ -100,4 +127,6 @@ while True:
 
 # Release resources
 videocam.release()
+frame.release()
+
 cv2.destroyAllWindows()

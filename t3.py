@@ -14,6 +14,7 @@ import cv2
 cap = cv2.VideoCapture(0) 
 
 while True:
+    
     # attempts to read another frame
     # ret   - boolean, true for sucessful capture of frame, false for failure
     # frame - an image array

@@ -57,7 +57,7 @@ key = cv2.waitKey(0)
 if key == 27: # esc key in ascii
     cv2.destroyAllWindows()
 elif key == ord('s'):
-    cv2.imwrite('fruitbasketrandom.jpg',img)
+    cv2.imwrite('assets/fruitbasketrandom.jpg',img)
     cv2.destroyAllWindows()
 
 
