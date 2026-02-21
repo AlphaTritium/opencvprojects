@@ -25,9 +25,11 @@ for i in range(len(corners)): # iterate through all the corners
         corner1 = tuple(corners[i][0]) 
         corner2 = tuple(corners[j][0])
         color = tuple(map(lambda x:int(x),np.random.randint(0,255,3))) # random color for each line
-        cv2.line(file,corner1, corner2,color,1) # draw a line between the two corners with the random color\
+        cv2.line(file,corner1, corner2,color,1) # draw a line between the two corners with the random color
         '''
-   
+
+        # ravel() flattens the array [[x,y]] -> [x,y]
+        # connects the corners with lines if they are close to each other (distance < 20)
         x1,y1 = corners[i].ravel()
         x2,y2 = corners[j].ravel()
         dist = np.sqrt((x2-x1)**2+(y2-y1)**2)
