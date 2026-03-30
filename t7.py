@@ -1,3 +1,9 @@
+'''
+corner detection 
+cv2.goodFeaturesToTrack() 
+Shi-Tomasi corner detection algorithm
+'''
+
 import numpy as np
 import cv2
 
